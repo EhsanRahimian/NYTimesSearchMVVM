@@ -1,6 +1,7 @@
 package com.nicootech.nytimes2.viewmodels;
 
 import com.nicootech.nytimes2.models.Docs;
+import com.nicootech.nytimes2.repositories.ArticleRepository;
 
 import java.util.List;
 
@@ -10,11 +11,12 @@ import androidx.lifecycle.ViewModel;
 
 public class ArticleListViewModel extends ViewModel {
 
-    private MutableLiveData<List<Docs>> mDocs = new MutableLiveData<>();
+    private ArticleRepository mArticleRepository;
 
     public ArticleListViewModel() {
+        mArticleRepository = ArticleRepository.getInstance();
     }
     public LiveData<List<Docs>> getDocs(){
-        return mDocs;
+        return mArticleRepository.getDocs();
     }
 }
