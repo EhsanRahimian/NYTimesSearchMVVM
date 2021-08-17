@@ -1,6 +1,8 @@
 package com.nicootech.nytimes2;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -14,6 +16,7 @@ import com.nicootech.nytimes2.request.NYTApi;
 import com.nicootech.nytimes2.request.ServiceGenerator;
 import com.nicootech.nytimes2.request.responses.ArticleSearchResponse;
 import com.nicootech.nytimes2.util.Constants;
+import com.nicootech.nytimes2.viewmodels.ArticleListViewModel;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,15 +24,23 @@ import java.util.List;
 
 public class ArticleListActivity extends BaseActivity {
     private static final String TAG = "ArticleListActivity";
+
+    private ArticleListViewModel mArticleListViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article_list);
 
-        findViewById(R.id.test).setOnClickListener(new View.OnClickListener() {
+        mArticleListViewModel = new ViewModelProvider(this).get(ArticleListViewModel.class);
+
+        subscribeObservers();
+    }
+
+    private void subscribeObservers(){
+        mArticleListViewModel.getDocs().observe(this, new Observer<List<Docs>>() {
             @Override
-            public void onClick(View v) {
-                testRetrofitRequest();
+            public void onChanged(List<Docs> docs) {
+
             }
         });
     }
