@@ -1,15 +1,13 @@
 package com.nicootech.nytimes2.repositories;
 
 import com.nicootech.nytimes2.models.Docs;
-
+import com.nicootech.nytimes2.request.ArticleApiClient;
 import java.util.List;
-
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 public class ArticleRepository {
     private static ArticleRepository instance;
-    private MutableLiveData<List<Docs>> mDocs;
+    private ArticleApiClient mArticleApiClient;
 
     public static ArticleRepository getInstance(){
         if(instance == null){
@@ -18,9 +16,9 @@ public class ArticleRepository {
         return instance;
     }
     public ArticleRepository() {
-        mDocs = new MutableLiveData<>();
+        mArticleApiClient = ArticleApiClient.getInstance();
     }
     public LiveData<List<Docs>> getDocs(){
-        return mDocs;
+        return mArticleApiClient.getDocs();
     }
 }
