@@ -4,6 +4,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.nicootech.nytimes2.R;
 import com.nicootech.nytimes2.models.Docs;
 
@@ -31,6 +33,13 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+        RequestOptions requestOptions = new RequestOptions()
+                .placeholder(R.drawable.ic_launcher_background);
+
+        Glide.with(viewHolder.itemView.getContext())
+                .setDefaultRequestOptions(requestOptions)
+                .load(mDocs.get(i).getMultimedia().get(17).getUrl())
+                .into(((ArticleViewHolder)viewHolder).image);
 
         ((ArticleViewHolder)viewHolder).headline.setText(mDocs.get(i).getHeadline().getMain());
     }
