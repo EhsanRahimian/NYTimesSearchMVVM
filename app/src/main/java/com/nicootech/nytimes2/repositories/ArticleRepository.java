@@ -6,6 +6,7 @@ import java.util.List;
 import androidx.lifecycle.LiveData;
 
 public class ArticleRepository {
+
     private static ArticleRepository instance;
     private ArticleApiClient mArticleApiClient;
 
@@ -20,5 +21,12 @@ public class ArticleRepository {
     }
     public LiveData<List<Docs>> getDocs(){
         return mArticleApiClient.getDocs();
+    }
+
+    public void searchArticlesApi(String query, int pageNumber){
+        if(pageNumber == 0){
+            pageNumber = 1;
+        }
+        mArticleApiClient.searchArticlesApi(query,pageNumber);
     }
 }

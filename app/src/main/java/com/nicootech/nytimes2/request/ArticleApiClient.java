@@ -6,18 +6,15 @@ import com.nicootech.nytimes2.AppExecutors;
 import com.nicootech.nytimes2.models.Docs;
 import com.nicootech.nytimes2.request.responses.ArticleSearchResponse;
 import com.nicootech.nytimes2.util.Constants;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import retrofit2.Call;
 import retrofit2.Response;
-
 import static com.nicootech.nytimes2.util.Constants.NETWORK_TIMEOUT;
 
 public class ArticleApiClient {
@@ -49,6 +46,8 @@ public class ArticleApiClient {
         }
         mRetrieveArticleRunnable = new RetrieveArticleRunnable(query, pageNumber);
         final Future handler = AppExecutors.getInstance().networkIO().submit(mRetrieveArticleRunnable);
+
+        // Set a timeout for the data refresh
         AppExecutors.getInstance().networkIO().schedule(new Runnable() {
             @Override
             public void run() {
@@ -56,13 +55,12 @@ public class ArticleApiClient {
                 handler.cancel(true);
             }
         },NETWORK_TIMEOUT, TimeUnit.MICROSECONDS);
-
     }
 
     private class RetrieveArticleRunnable implements Runnable{
 
-        private String query;
-        private int pageNumber;
+        private  String query;
+        private  int pageNumber;
         boolean cancelRequest;
 
         public RetrieveArticleRunnable(String query, int pageNumber) {
@@ -73,13 +71,14 @@ public class ArticleApiClient {
 
         @Override
         public void run() {
+            
             try {
                 Response response = getArticles(query,pageNumber).execute();
                 if(cancelRequest) {
                     return;
                 }
                 if(response.code() == 200){
-                    List<Docs> list = new ArrayList<>(((ArticleSearchResponse)response.body()).getResponse().getDocs());
+                    List<Docs> list =  new ArrayList<>(((ArticleSearchResponse)response.body()).getResponse().getDocs());
                     if(pageNumber == 1){
                         mDocs.postValue(list);
                     }
@@ -91,7 +90,7 @@ public class ArticleApiClient {
                 }
                 else{
                     String error = response.errorBody().string();
-                    Log.d(TAG, "run: "+error);
+                    Log.e(TAG, "run: "+error);
                     mDocs.postValue(null); // in future we detect null if find it so we figure
                     // it out the is an error and let the user know
                 }

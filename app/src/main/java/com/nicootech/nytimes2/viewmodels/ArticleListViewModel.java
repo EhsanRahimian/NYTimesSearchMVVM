@@ -6,7 +6,6 @@ import com.nicootech.nytimes2.repositories.ArticleRepository;
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class ArticleListViewModel extends ViewModel {
@@ -18,5 +17,9 @@ public class ArticleListViewModel extends ViewModel {
     }
     public LiveData<List<Docs>> getDocs(){
         return mArticleRepository.getDocs();
+    }
+
+    public void searchArticlesApi(String query, int pageNumber){
+        mArticleRepository.searchArticlesApi(query,pageNumber);
     }
 }
