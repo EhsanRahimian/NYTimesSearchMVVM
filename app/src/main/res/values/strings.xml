@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">NY Times2</string>
     <string name="test">Test</string>
+    <string name="article_headline">Article HeadLine</string>
+    <string name="todo">TODO</string>
+    <string name="todo">TODO</string>
+    <string name="placeholder_text_that_will_never_be_seen_hopefully">Placeholder text that will never be seen (hopefully)</string>
 </resources>
