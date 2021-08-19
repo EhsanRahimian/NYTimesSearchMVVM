@@ -9,6 +9,8 @@ public class ArticleRepository {
 
     private static ArticleRepository instance;
     private ArticleApiClient mArticleApiClient;
+    private String mQuery;
+    private int mPageNumber;
 
     public static ArticleRepository getInstance(){
         if(instance == null){
@@ -27,7 +29,12 @@ public class ArticleRepository {
         if(pageNumber == 0){
             pageNumber = 1;
         }
+        mQuery = query;
+        mPageNumber = pageNumber;
         mArticleApiClient.searchArticlesApi(query,pageNumber);
+    }
+    public void searchNextPage(){
+        searchArticlesApi(mQuery, mPageNumber+1);
     }
     public void cancelRequest(){
         mArticleApiClient.cancelRequest();

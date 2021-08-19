@@ -28,6 +28,12 @@ public class ArticleListViewModel extends ViewModel {
         mIsPerformingQuery = true;
         mArticleRepository.searchArticlesApi(query,pageNumber);
     }
+
+    public void searchNextPage(){
+        if(!mIsPerformingQuery && mIsViewingArticles){
+            mArticleRepository.searchNextPage();
+        }
+    }
     public boolean isViewingArticles(){
         return mIsViewingArticles;
     }

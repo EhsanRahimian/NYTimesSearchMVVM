@@ -94,7 +94,14 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             //to return the CATEGORY_TYPE... so I used mDocs.get(position)== null !
             return CATEGORY_TYPE;
         }
+
         else if(mDocs.get(position).getHeadline().getMain().equals("LOADING...")){
+            return LOADING_TYPE;
+        }
+
+        else if(position == mDocs.size()-1
+            && position !=0
+            && !mDocs.get(position).getHeadline().equals("EXHAUSTED...")){
             return LOADING_TYPE;
         }
         else{
