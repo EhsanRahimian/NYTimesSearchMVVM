@@ -40,6 +40,7 @@ public class ArticleApiClient {
         return mDocs;
     }
 
+    //this is the method that we are going to call through the classes
     public void searchArticlesApi(String query, int pageNumber){
         if(mRetrieveArticleRunnable != null){
             mRetrieveArticleRunnable = null; // because we need to instantiate the new one as seen in below:
@@ -101,18 +102,28 @@ public class ArticleApiClient {
 
 
         }
+
+//        NYTApi service = ServiceGenerator.getRetrofitInstance().create(NYTApi.class);
+//        Call<ArticleSearchResponse> call = service.searchArticle();
+//        private void cancelRequest() {
+//            Log.d(TAG, "cancelRequest: canceling the request.");
+//            cancelRequest = true;
+//
+//        }
         private Call<ArticleSearchResponse> getArticles(String query, int pageNumber){
             return ServiceGenerator.getNytApi().searchArticle(
                     Constants.API_KEY,
                     query,
-                    String.valueOf(pageNumber)
+                    pageNumber
             );
         }
-        private void cancelRequest() {
-            Log.d(TAG, "cancelRequest: canceling the request.");
-            cancelRequest = true;
 
+        private void cancelRequest(){
+            Log.d(TAG, "cancelRequest: canceling the retrieval query");
+            cancelRequest = true;
         }
+
+
     }
 
 }

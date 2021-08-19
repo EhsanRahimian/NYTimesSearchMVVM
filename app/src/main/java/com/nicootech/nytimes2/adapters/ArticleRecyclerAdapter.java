@@ -19,8 +19,7 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private List<Docs> mDocs;
     private OnArticleListener mOnArticleListener;
 
-    public ArticleRecyclerAdapter(List<Docs> mDocs, OnArticleListener mOnArticleListener) {
-        this.mDocs = mDocs;
+    public ArticleRecyclerAdapter(OnArticleListener mOnArticleListener) {
         this.mOnArticleListener = mOnArticleListener;
     }
 
@@ -38,7 +37,7 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         Glide.with(viewHolder.itemView.getContext())
                 .setDefaultRequestOptions(requestOptions)
-                .load(mDocs.get(i).getMultimedia().get(17).getUrl())
+                .load(mDocs.get(i).getMultimedia().get(1).getUrl())
                 .into(((ArticleViewHolder)viewHolder).image);
 
         ((ArticleViewHolder)viewHolder).headline.setText(mDocs.get(i).getHeadline().getMain());

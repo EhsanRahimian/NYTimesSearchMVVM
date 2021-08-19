@@ -15,6 +15,7 @@ public class ArticleListViewModel extends ViewModel {
     public ArticleListViewModel() {
         mArticleRepository = ArticleRepository.getInstance();
     }
+
     public LiveData<List<Docs>> getDocs(){
         return mArticleRepository.getDocs();
     }
