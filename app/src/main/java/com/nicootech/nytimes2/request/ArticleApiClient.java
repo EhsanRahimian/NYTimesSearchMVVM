@@ -103,13 +103,6 @@ public class ArticleApiClient {
 
         }
 
-//        NYTApi service = ServiceGenerator.getRetrofitInstance().create(NYTApi.class);
-//        Call<ArticleSearchResponse> call = service.searchArticle();
-//        private void cancelRequest() {
-//            Log.d(TAG, "cancelRequest: canceling the request.");
-//            cancelRequest = true;
-//
-//        }
         private Call<ArticleSearchResponse> getArticles(String query, int pageNumber){
             return ServiceGenerator.getNytApi().searchArticle(
                     Constants.API_KEY,

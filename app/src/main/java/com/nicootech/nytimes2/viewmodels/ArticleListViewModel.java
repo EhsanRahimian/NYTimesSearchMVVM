@@ -10,9 +10,11 @@ import androidx.lifecycle.ViewModel;
 
 public class ArticleListViewModel extends ViewModel {
 
+    private boolean mIsViewingArticles;
     private ArticleRepository mArticleRepository;
 
     public ArticleListViewModel() {
+        mIsViewingArticles = false;
         mArticleRepository = ArticleRepository.getInstance();
     }
 
@@ -21,6 +23,14 @@ public class ArticleListViewModel extends ViewModel {
     }
 
     public void searchArticlesApi(String query, int pageNumber){
+        mIsViewingArticles = true;
         mArticleRepository.searchArticlesApi(query,pageNumber);
+    }
+    public boolean isViewingArticles(){
+        return mIsViewingArticles;
+    }
+
+    public void setIsViewingArticles(boolean isViewingArticles){
+        mIsViewingArticles = isViewingArticles;
     }
 }

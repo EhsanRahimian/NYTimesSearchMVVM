@@ -18,8 +18,7 @@
             <androidx.appcompat.widget.SearchView
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:id="@+id/search_view"
-                app:queryHint="news...">
+                android:id="@+id/search_view">
 
             </androidx.appcompat.widget.SearchView>
 

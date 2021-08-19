@@ -12,6 +12,7 @@ import com.nicootech.nytimes2.adapters.ArticleRecyclerAdapter;
 import com.nicootech.nytimes2.adapters.OnArticleListener;
 import com.nicootech.nytimes2.models.Docs;
 import com.nicootech.nytimes2.util.Testing;
+import com.nicootech.nytimes2.util.VerticalSpacingItemDecorator;
 import com.nicootech.nytimes2.viewmodels.ArticleListViewModel;
 import java.util.List;
 
@@ -35,12 +36,18 @@ public class ArticleListActivity extends BaseActivity implements OnArticleListen
         subscribeObservers();
         //testRetrofitRequest();
         initSearchView();
+        if(!mArticleListViewModel.isViewingArticles()){
+            displaySearchCategories();
+        }
 
     }
     private void initRecyclerView(){
         mAdapter = new ArticleRecyclerAdapter(this);
+        VerticalSpacingItemDecorator itemDecorator = new VerticalSpacingItemDecorator(30);
+        mRecyclerView.addItemDecoration(itemDecorator);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
     }
 
     private void initSearchView(){
@@ -87,11 +94,16 @@ public class ArticleListActivity extends BaseActivity implements OnArticleListen
 
     @Override
     public void onArticleClick(int position) {
-
     }
 
     @Override
     public void onCategoryClick(String category) {
+        mAdapter.displayLoading();
+        mArticleListViewModel.searchArticlesApi(category,1);
+    }
 
+    private void displaySearchCategories(){
+        mArticleListViewModel.setIsViewingArticles(false);
+        mAdapter.displaySearchCategories();
     }
 }
