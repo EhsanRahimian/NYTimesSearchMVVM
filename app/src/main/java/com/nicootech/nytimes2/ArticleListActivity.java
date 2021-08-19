@@ -1,12 +1,14 @@
 package com.nicootech.nytimes2;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.nicootech.nytimes2.adapters.ArticleRecyclerAdapter;
 import com.nicootech.nytimes2.adapters.OnArticleListener;
@@ -20,6 +22,7 @@ public class ArticleListActivity extends BaseActivity implements OnArticleListen
     private static final String TAG = "ArticleListActivity";
     private RecyclerView mRecyclerView;
     private ArticleRecyclerAdapter mAdapter;
+    private SearchView mSearchView;
 
 
     private ArticleListViewModel mArticleListViewModel;
@@ -28,6 +31,7 @@ public class ArticleListActivity extends BaseActivity implements OnArticleListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article_list);
         mRecyclerView = findViewById(R.id.article_list);
+        mSearchView = findViewById(R.id.search_view);
 
 
         mArticleListViewModel = new ViewModelProvider(this).get(ArticleListViewModel.class);
@@ -39,6 +43,7 @@ public class ArticleListActivity extends BaseActivity implements OnArticleListen
         if(!mArticleListViewModel.isViewingArticles()){
             displaySearchCategories();
         }
+        setSupportActionBar(findViewById(R.id.toolbar));
 
     }
     private void initRecyclerView(){
@@ -51,15 +56,15 @@ public class ArticleListActivity extends BaseActivity implements OnArticleListen
     }
 
     private void initSearchView(){
-        final SearchView searchView = findViewById(R.id.search_view);
-        searchView.setQueryHint("covid...");
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+        mSearchView.setQueryHint("covid...");
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
 
                 mAdapter.displayLoading();
                 mArticleListViewModel.searchArticlesApi(query, 1);
-
+                mSearchView.clearFocus();
                 return false;
             }
 
@@ -77,6 +82,7 @@ public class ArticleListActivity extends BaseActivity implements OnArticleListen
                if(docs != null){
                    if(mArticleListViewModel.isViewingArticles()){
                        Testing.printArticles("Article test",docs);
+                       mArticleListViewModel.setIsPerformingQuery(false);
                        mAdapter.setArticles(docs);
                    }
                }
@@ -100,6 +106,7 @@ public class ArticleListActivity extends BaseActivity implements OnArticleListen
     public void onCategoryClick(String category) {
         mAdapter.displayLoading();
         mArticleListViewModel.searchArticlesApi(category,1);
+        mSearchView.clearFocus();
     }
 
     private void displaySearchCategories(){
@@ -116,5 +123,19 @@ public class ArticleListActivity extends BaseActivity implements OnArticleListen
         else{
             displaySearchCategories();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId()==R.id.action_categories){
+            displaySearchCategories();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.article_serach_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 }

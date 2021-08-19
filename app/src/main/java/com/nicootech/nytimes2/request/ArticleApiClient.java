@@ -118,6 +118,11 @@ public class ArticleApiClient {
 
 
     }
+    public void cancelRequest(){
+        if(mRetrieveArticleRunnable != null){
+            mRetrieveArticleRunnable.cancelRequest();
+        }
+    }
 
 }
 

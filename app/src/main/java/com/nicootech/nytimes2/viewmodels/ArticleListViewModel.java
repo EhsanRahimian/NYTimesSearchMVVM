@@ -12,9 +12,11 @@ public class ArticleListViewModel extends ViewModel {
 
     private boolean mIsViewingArticles;
     private ArticleRepository mArticleRepository;
+    private boolean mIsPerformingQuery;
 
     public ArticleListViewModel() {
         mArticleRepository = ArticleRepository.getInstance();
+        mIsPerformingQuery = false;
     }
 
     public LiveData<List<Docs>> getDocs(){
@@ -23,6 +25,7 @@ public class ArticleListViewModel extends ViewModel {
 
     public void searchArticlesApi(String query, int pageNumber){
         mIsViewingArticles = true;
+        mIsPerformingQuery = true;
         mArticleRepository.searchArticlesApi(query,pageNumber);
     }
     public boolean isViewingArticles(){
@@ -32,7 +35,20 @@ public class ArticleListViewModel extends ViewModel {
     public void setIsViewingArticles(boolean isViewingArticles){
         mIsViewingArticles = isViewingArticles;
     }
+
+    public boolean isPerformingQuery() {
+        return mIsPerformingQuery;
+    }
+
+    public void setIsPerformingQuery(boolean isPerformingQuery) {
+        this.mIsPerformingQuery = isPerformingQuery;
+    }
+
     public boolean onBackPressed(){
+        if(isPerformingQuery()){
+            mArticleRepository.cancelRequest();
+            mIsPerformingQuery = false;
+        }
         if(mIsViewingArticles){
             mIsViewingArticles = false;
             return false;

@@ -29,4 +29,7 @@ public class ArticleRepository {
         }
         mArticleApiClient.searchArticlesApi(query,pageNumber);
     }
+    public void cancelRequest(){
+        mArticleApiClient.cancelRequest();
+    }
 }
