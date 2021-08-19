@@ -75,11 +75,11 @@ public class ArticleListActivity extends BaseActivity implements OnArticleListen
             @Override
             public void onChanged(List<Docs> docs) {
                if(docs != null){
-                   Testing.printArticles("Article test",docs);
-
-                   mAdapter.setArticles(docs);
+                   if(mArticleListViewModel.isViewingArticles()){
+                       Testing.printArticles("Article test",docs);
+                       mAdapter.setArticles(docs);
+                   }
                }
-
             }
         });
     }
@@ -105,5 +105,16 @@ public class ArticleListActivity extends BaseActivity implements OnArticleListen
     private void displaySearchCategories(){
         mArticleListViewModel.setIsViewingArticles(false);
         mAdapter.displaySearchCategories();
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if(mArticleListViewModel.onBackPressed()){
+            super.onBackPressed();
+        }
+        else{
+            displaySearchCategories();
+        }
     }
 }

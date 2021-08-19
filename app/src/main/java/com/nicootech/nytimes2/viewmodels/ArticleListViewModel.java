@@ -14,7 +14,6 @@ public class ArticleListViewModel extends ViewModel {
     private ArticleRepository mArticleRepository;
 
     public ArticleListViewModel() {
-        mIsViewingArticles = false;
         mArticleRepository = ArticleRepository.getInstance();
     }
 
@@ -33,4 +32,12 @@ public class ArticleListViewModel extends ViewModel {
     public void setIsViewingArticles(boolean isViewingArticles){
         mIsViewingArticles = isViewingArticles;
     }
+    public boolean onBackPressed(){
+        if(mIsViewingArticles){
+            mIsViewingArticles = false;
+            return false;
+        }
+        return true;
+    }
+
 }
