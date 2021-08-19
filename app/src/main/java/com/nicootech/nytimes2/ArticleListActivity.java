@@ -1,5 +1,6 @@
 package com.nicootech.nytimes2;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,13 +33,34 @@ public class ArticleListActivity extends BaseActivity implements OnArticleListen
 
         initRecyclerView();
         subscribeObservers();
-        testRetrofitRequest();
+        //testRetrofitRequest();
+        initSearchView();
 
     }
     private void initRecyclerView(){
         mAdapter = new ArticleRecyclerAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    private void initSearchView(){
+        final SearchView searchView = findViewById(R.id.search_view);
+        searchView.setQueryHint("covid...");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                mAdapter.displayLoading();
+                mArticleListViewModel.searchArticlesApi(query, 1);
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
     }
 
     private void subscribeObservers(){
@@ -59,9 +81,9 @@ public class ArticleListActivity extends BaseActivity implements OnArticleListen
         mArticleListViewModel.searchArticlesApi(query,pageNumber);
     }
 
-    private void testRetrofitRequest(){
-        searchArticlesApi("afghanistan",1);
-    }
+//    private void testRetrofitRequest(){
+//        searchArticlesApi("afghanistan",1);
+//    }
 
     @Override
     public void onArticleClick(int position) {
